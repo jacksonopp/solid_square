@@ -1,8 +1,11 @@
-use nannou::{prelude::*, color::named};
+use common::traits::DrawModel;
+use nannou::{color::named, prelude::*};
 
 mod models;
 use models::Model;
 
+mod art_bits;
+mod common;
 mod events;
 
 fn main() {
@@ -16,8 +19,10 @@ fn model(app: &App) -> Model {
         .view(view)
         .build()
         .unwrap();
-    
-    Model::new(window)
+
+    let rect = app.window_rect();
+
+    Model::new(window, &rect)
 }
 
 fn event(app: &App, model: &mut Model, event: Event) {
@@ -26,25 +31,22 @@ fn event(app: &App, model: &mut Model, event: Event) {
             if let Some(event) = simple {
                 match event {
                     KeyReleased(Key::S) => events::screenshot(app),
-                    _ => ()
+                    _ => (),
                 }
             }
-        },
+        }
 
         Event::Update(update) => events::update(app, model, update),
-        _ => ()
+        _ => (),
     }
 }
 
-fn view(app: &App, _model: &Model, frame: Frame) {
+fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
 
     draw.background().color(named::CORNSILK);
-    draw.ellipse()
-        .x_y(0.0, 0.0)
-        .color(named::GREEN)
-        .radius(20.0);
+
+    model.squares.iter().for_each(|s| s.draw(&draw));
 
     draw.to_frame(app, &frame).unwrap();
-
 }

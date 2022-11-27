@@ -4,3 +4,4 @@ use nannou::prelude::*;
 pub trait DrawModel {
     fn draw(&self, draw: &Draw);
 }
+
