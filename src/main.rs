@@ -30,7 +30,7 @@ fn event(app: &App, model: &mut Model, event: Event) {
         Event::WindowEvent { id: _, simple } => {
             if let Some(event) = simple {
                 match event {
-                    KeyReleased(Key::S) => events::screenshot(app),
+                    KeyReleased(Key::S) => events::screenshot(app, model.seed.into()),
                     _ => (),
                 }
             }
